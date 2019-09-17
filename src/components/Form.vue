@@ -1,10 +1,16 @@
 <template>
     <div class="form-cont">
-        <form>
-            <input type="text" v-model="name" name="value" placeholder="Type In The Value">
-            <input type="submit" value="Add" @click.prevent="submit">
+        <form v-if="add">
+            <input type="text" v-model="desc" name="desc" placeholder="Please Type In Your Todo">
+            <input type="submit" value="Add" @click.prevent="submit(true)">
         </form>
-        <h2> {{ name }} </h2>
+
+         <form v-else>
+            <input type="button" class="forget" value="X" @click="forget">
+            <input type="text" v-model="desc" name="desc" placeholder="Please Update Your Todo">
+            <input type="button" value="Update" @click="submit(false)">
+        </form>
+
     </div>
 </template>
 
@@ -12,17 +18,41 @@
 <script>
 export default {
     name: "form",
-    components: {
-
-    },
+    props: ["add_form", "desc_before"] 
+    // {
+    //     add_form: Boolean,
+    //     desc_before: String
+    // }
+    ,
     data() {
         return {
-            name: ""
+            desc: this.desc_before || "",
+            add: this.add_form
+        }
+    },
+    watch: {
+        add_form: {
+            immediate: true,
+            handler (new_one, old) {
+                this.add = new_one || !this.add;
+            }
         }
     },
     methods: {
-        submit() {
-            alert("Success")
+        submit(add) {
+            if(add) {
+                this.$emit("add-todo", this.desc)
+                this.desc = ""
+            } else {
+                // let obj = {id: "", desc: this.desc}
+                // this.$emit("update-todo", obj)
+                // this.desc = ""
+
+                alert("Ready To Update")
+            }
+        },
+        forget() {
+            this.add = true
         }
     }    
 }
@@ -43,7 +73,7 @@ export default {
 
     form input[type=text] {
         height: 25px;
-        flex: 2;
+        flex: 5;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
         outline: none;
@@ -52,6 +82,20 @@ export default {
         background: transparent;
     }
 
+    form input[type=button] {
+        flex: 1;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    form input[type=button]:hover {
+        background: gray;
+    }
+
+    /* FOR ADD BTN */
     form input[type=submit] {
         flex: 1;
         border-top-right-radius: 10px;
@@ -63,5 +107,13 @@ export default {
 
     form input[type=submit]:hover {
         background: gray;
+    }
+
+    .forget {
+        /* flex:  !important; */
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
     }
 </style>
