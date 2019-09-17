@@ -1,8 +1,8 @@
 <template>
     <div class="nav">
         <div class="inner-nav">
-            <router-link to="/">Todos</router-link> |
-            <router-link to="/users">Users</router-link>
+            <router-link class="link" to="/">Todos</router-link> |
+            <router-link class="link" to="/users">Users</router-link>
         </div>
     </div>
 </template>
@@ -16,14 +16,26 @@ export default {
 
 <style scoped>
     .nav {
-        background: red;
-        height: 100px;
+        background: black;
+        height: auto;
     }
 
     .inner-nav {
-        background: gray;
-        height: 80%;
+        /* background: gray; */
         width: 50%;
         margin: auto;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+        color: white;
+    }
+
+    .link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .link:hover {
+        
     }
 </style>

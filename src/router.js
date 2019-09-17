@@ -6,7 +6,8 @@ import Users from './views/Users.vue'
 Vue.use(Router)
 
 export default new Router({
-    routes: [{
+    routes: [
+        {
             path: '/',
             name: 'todos',
             component: Todos
