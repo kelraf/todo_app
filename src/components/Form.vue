@@ -18,12 +18,7 @@
 <script>
 export default {
     name: "form",
-    props: ["add_form", "desc_before"] 
-    // {
-    //     add_form: Boolean,
-    //     desc_before: String
-    // }
-    ,
+    props: ["add_form", "desc_before", "todo_id"],
     data() {
         return {
             desc: this.desc_before || "",
@@ -36,6 +31,12 @@ export default {
             handler (new_one, old) {
                 this.add = new_one || !this.add;
             }
+        },
+        desc_before: {
+            immediate: true,
+            handler (new_one, old) {
+                this.desc = new_one;
+            }
         }
     },
     methods: {
@@ -44,14 +45,14 @@ export default {
                 this.$emit("add-todo", this.desc)
                 this.desc = ""
             } else {
-                // let obj = {id: "", desc: this.desc}
-                // this.$emit("update-todo", obj)
-                // this.desc = ""
-
-                alert("Ready To Update")
+                let obj = {todo_id: this.todo_id, desc: this.desc}
+                this.$emit("update-todo", obj)
+                this.desc = ""
+                this.add = true
             }
         },
         forget() {
+            this.desc = ""
             this.add = true
         }
     }    
@@ -110,7 +111,6 @@ export default {
     }
 
     .forget {
-        /* flex:  !important; */
         border-top-right-radius: 0px !important;
         border-bottom-right-radius: 0px !important;
         border-top-left-radius: 10px;

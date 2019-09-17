@@ -1,7 +1,7 @@
 <template>
   <div class="todos">
     <div class="header">
-      <Form :add_form="add_form" :desc_before="desc_before" v-on:add-todo="add_todo" />
+      <Form :add_form="add_form" :todo_id="todo_id" :desc_before="desc_before" v-on:update-todo="updateTodo" v-on:add-todo="add_todo" />
     </div>
     <div class="body">
 
@@ -32,6 +32,8 @@ export default {
   data() {
     return {
       todos: [],
+      one_todo: {},
+      todo_id: null,
       add_form: true,
       desc_before: null
     }
@@ -53,8 +55,26 @@ export default {
       .catch(err => alert(err))
     }, 
     edit(id) {
-      // alert(id)
+      axios.get(`http://localhost:1337/todos/${id}`)
+      .then((resp) => {
+        this.desc_before = resp.data.desc
+        this.todo_id = id
+      })
+      // .then(resp => alert(resp.data.desc))
+      .catch(err => alert(err))
       this.add_form = false
+    },
+    updateTodo(object) {
+      let {todo_id, desc} = object
+      // alert(desc)
+      // alert(todo_id)
+      axios.put(`http://localhost:1337/todos/${todo_id}`, {desc: desc})
+      .then((resp) => {
+        // console.log(resp.data)
+        this.todos = this.todos.filter(todo => todo.id != todo_id)
+        this.todos.push(resp.data)
+      })
+      .catch(err => alert(err))
     }
   }
 }
